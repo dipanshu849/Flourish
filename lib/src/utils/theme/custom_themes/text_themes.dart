@@ -1,3 +1,4 @@
+import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -33,11 +34,23 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ThemeText {
   static TextTheme lightTextTheme = TextTheme(
-      headlineMedium: GoogleFonts.montserrat(
-    color: Colors.black87,
-  ));
+      headlineMedium: GoogleFonts.poppins(
+        color: slate600,
+      ),
+      headlineSmall: GoogleFonts.poppins(
+        color: slate600,
+      ),
+      bodyMedium: GoogleFonts.poppins(
+        color: slate400,
+      ));
   static TextTheme darkTextTheme = TextTheme(
-      headlineMedium: GoogleFonts.montserrat(
-    color: Colors.white60,
-  ));
+      headlineMedium: GoogleFonts.poppins(
+        color: light,
+      ),
+      headlineSmall: GoogleFonts.poppins(
+        color: light,
+      ),
+      bodyMedium: GoogleFonts.poppins(
+        color: light,
+      ));
 }

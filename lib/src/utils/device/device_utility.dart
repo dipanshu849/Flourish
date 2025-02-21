@@ -26,4 +26,9 @@ class DeviceUtility {
       return TargetPlatform.android;
     }
   }
+
+  /// Returns the height of the bottom navigation bar
+  static double getBottomNavigationBarHeight(BuildContext context) {
+    return MediaQuery.of(context).padding.bottom;
+  }
 }

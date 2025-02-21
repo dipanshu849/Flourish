@@ -32,6 +32,10 @@ class HelperFunction {
   }
 
   static bool isDarkMode() {
-    return Get.isDarkMode;
+    return Brightness.dark == Get.mediaQuery.platformBrightness;
+  }
+
+  static Size getScreenSize(BuildContext context) {
+    return MediaQuery.of(context).size;
   }
 }
