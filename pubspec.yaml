@@ -25,6 +25,7 @@ dependencies:
   logger: ^2.5.0
   flutter_native_splash: ^2.4.4
   smooth_page_indicator: ^1.2.0+3
+  line_awesome_flutter: ^3.0.1
 
   # state management
 
@@ -42,3 +43,4 @@ flutter:
     - assets/images/
     - assets/logo/
     - assets/images/on_boarding/
+    - assets/images/authentication/

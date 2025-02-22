@@ -68,6 +68,11 @@ const String emailVerificationSubTitle1 =
 const String emailVerificationSubTitle2 =
     "If not auto redirected after verification, click on continue button.";
 
+// email verified
+const String emailVerifiedTitle = "Your Account Successfully Created";
+const String emailVerifiedSubTitle =
+    "Email Verification Completed Successfully";
+
 // Snack bar
 const String alert = "Alert";
 const String emailSent = "Hurray!!! Email is on its way";

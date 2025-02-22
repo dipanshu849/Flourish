@@ -10,4 +10,7 @@ const String onboardingImage3 = "assets/images/on_boarding/earn_rewards.png";
 const String onboardingImage4 =
     "assets/images/on_boarding/feedback_matters.png";
 
+// authentication images
+const String loginImage = "assets/images/authentication/login.png";
+
 // social logos
