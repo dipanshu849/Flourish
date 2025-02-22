@@ -24,11 +24,11 @@ class ProductTitleWidget extends StatelessWidget {
       style: smallSize
           ? Theme.of(context)
               .textTheme
-              .titleMedium!
+              .titleSmall!
               .apply(color: isDark ? slate400 : slate800)
           : Theme.of(context)
               .textTheme
-              .titleSmall!
+              .titleMedium!
               .apply(color: isDark ? slate400 : slate800),
       overflow: TextOverflow.ellipsis,
       maxLines: maxLines,

@@ -27,7 +27,7 @@ class NavigationMenu extends StatelessWidget {
           },
           backgroundColor: isDark ? slate800 : light,
           indicatorColor:
-              isDark ? dark.withOpacity(0.8) : slate400.withOpacity(0.8),
+              isDark ? dark.withOpacity(0.8) : slate400.withOpacity(0.4),
           destinations: [
             NavigationDestination(
                 icon: Icon(
@@ -52,8 +52,10 @@ class NavigationMenu extends StatelessWidget {
                 width: 48, // Adjust size as needed
                 height: 48,
                 decoration: BoxDecoration(
-                  color:
-                      isDark ? dark : slate400, // Solid color without opacity
+                  color: isDark
+                      ? dark
+                      : slate400
+                          .withOpacity(0.4), // Solid color without opacity
                   shape: BoxShape.circle,
                 ),
                 child: Icon(

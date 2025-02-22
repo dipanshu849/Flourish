@@ -24,11 +24,11 @@ class ProductPriceText extends StatelessWidget {
         maxLines: maxline,
         overflow: TextOverflow.ellipsis,
         style: isLarge
-            ? Theme.of(context).textTheme.headlineMedium!.apply(
+            ? Theme.of(context).textTheme.headlineSmall!.apply(
                   decoration: lineThough ? TextDecoration.lineThrough : null,
                   color: isDark ? light : dark,
                 )
-            : Theme.of(context).textTheme.titleLarge!.apply(
+            : Theme.of(context).textTheme.titleMedium!.apply(
                   decoration: lineThough ? TextDecoration.lineThrough : null,
                   color: isDark ? light : dark,
                 ));

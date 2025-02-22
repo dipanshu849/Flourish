@@ -1,12 +1,14 @@
 import 'package:flourish/src/common_style/rounded_image.dart';
 import 'package:flourish/src/features/authentication/screens/home/widget/circular_container.dart';
 import 'package:flourish/src/features/authentication/screens/home/widget/curved_edge_widget.dart';
+import 'package:flourish/src/features/authentication/screens/orders/orders.dart';
 import 'package:flourish/src/features/authentication/screens/setting/setting_menu_tile.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -145,7 +147,11 @@ class ProfileScreen extends StatelessWidget {
                       title: "Purchases",
                       icon: Icons.history,
                     ),
-                    const SettingMenuTile(title: "My Orders", icon: Icons.list),
+                    SettingMenuTile(
+                      title: "My Orders",
+                      icon: Icons.list,
+                      onTap: () => Get.to(() => const OrderScreen()),
+                    ),
                     SettingMenuTile(
                       title: "Notifications",
                       icon: Icons.notifications,

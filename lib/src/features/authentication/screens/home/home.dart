@@ -3,11 +3,13 @@ import "package:flourish/src/common_widget/layout/grid_layout.dart";
 import "package:flourish/src/common_widget/product/product_card_vertical.dart";
 import "package:flourish/src/features/authentication/screens/home/widget/circular_container.dart";
 import "package:flourish/src/features/authentication/screens/home/widget/curved_edge_widget.dart";
+import "package:flourish/src/features/authentication/screens/sub_category/sub_category.dart";
 import "package:flourish/src/utils/constants/colors.dart";
 import "package:flourish/src/utils/constants/sizes.dart";
 import "package:flourish/src/utils/device/device_utility.dart";
 import "package:flourish/src/utils/helpers/helper_function.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:line_awesome_flutter/line_awesome_flutter.dart";
 
 class HomeScreen extends StatelessWidget {
@@ -24,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             CurvedEdgeWidget(
               child: Container(
-                color: slate400,
+                color: slate400.withOpacity(0.6),
                 padding: const EdgeInsets.all(0),
                 child: SizedBox(
                   height: size.height * 0.4,
@@ -35,13 +37,13 @@ class HomeScreen extends StatelessWidget {
                         top: -150,
                         right: -250,
                         child: CircularContainer(
-                            backgroundColor: light.withOpacity(0.1)),
+                            backgroundColor: light.withOpacity(0.2)),
                       ),
                       Positioned(
                         top: 100,
                         right: -300,
                         child: CircularContainer(
-                            backgroundColor: light.withOpacity(0.1)),
+                            backgroundColor: light.withOpacity(0.2)),
                       ),
                       // Existing AppBar
                       Positioned(
@@ -103,7 +105,7 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: base),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: slate800.withOpacity(0.3),
+                            color: slate800.withOpacity(0.2),
                           ),
                           child: const Row(
                             children: [
@@ -118,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                                     border: InputBorder.none,
                                     hintText: "Search",
                                     hintStyle: const TextStyle(
-                                        color: slate400,
+                                        color: slate600,
                                         fontWeight: FontWeight.w400),
                                   ),
                                 ),
@@ -161,6 +163,7 @@ class HomeScreen extends StatelessWidget {
                                     return GestureDetector(
                                       onTap: () {
                                         //TODO: navigate to category page
+                                        Get.to(() => SubCategoryScreen());
                                       },
                                       child: Container(
                                         margin:

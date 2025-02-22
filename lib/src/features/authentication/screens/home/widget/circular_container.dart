@@ -1,3 +1,4 @@
+import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class CircularContainer extends StatelessWidget {
@@ -8,7 +9,7 @@ class CircularContainer extends StatelessWidget {
     this.height = 400,
     this.radius = 400,
     this.padding = 0,
-    this.backgroundColor = Colors.white38,
+    this.backgroundColor = light,
   });
 
   final double? width;

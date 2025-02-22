@@ -28,7 +28,7 @@ class ProductCardVertical extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [ShadowStyle.verticalProductShadow],
           borderRadius: BorderRadius.circular(10),
-          color: isDark ? dark : slate400,
+          color: isDark ? dark : slate400.withOpacity(0.2),
         ),
         child: Column(
           children: [
@@ -108,6 +108,7 @@ class ProductCardVertical extends StatelessWidget {
                   // const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const ProductPriceText(
                         price: '100',

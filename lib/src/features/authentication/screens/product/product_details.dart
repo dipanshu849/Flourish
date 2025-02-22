@@ -4,11 +4,13 @@ import 'package:flourish/src/features/authentication/screens/home/widget/curved_
 import 'package:flourish/src/features/authentication/screens/product/product_detail_image_slider.dart';
 import 'package:flourish/src/features/authentication/screens/product/product_meta_data.dart';
 import 'package:flourish/src/features/authentication/screens/product/rating_review.dart';
+import 'package:flourish/src/features/authentication/screens/review/review.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProductDetails extends StatelessWidget {
@@ -75,7 +77,7 @@ class ProductDetails extends StatelessWidget {
                             .apply(color: isDark ? light : dark),
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () => Get.to(() => ReviewScreen()),
                           icon: Icon(
                             LineAwesomeIcons.angle_right_solid,
                             color: isDark ? light : dark,
