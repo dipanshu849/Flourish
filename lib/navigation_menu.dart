@@ -1,4 +1,6 @@
 import 'package:flourish/src/features/authentication/screens/home/home.dart';
+import 'package:flourish/src/features/authentication/screens/sell/sell.dart';
+import 'package:flourish/src/features/authentication/screens/setting/setting.dart';
 import 'package:flourish/src/features/authentication/screens/wishlist/wishlist.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
@@ -89,11 +91,11 @@ class NavigationController extends GetxController {
   final List<Widget> screens = [
     const HomeScreen(),
     const HomeScreen(),
-    const HomeScreen(),
+    ProductUploadPage(),
     // const ComplaintPage(),
     // const QRCodePage(),
     const WishlistScreen(),
-    const HomeScreen(),
+    const ProfileScreen(),
     // const ProfileScreen(),d
   ];
 }

@@ -1,4 +1,7 @@
+import 'package:flourish/src/common_widget/layout/grid_layout.dart';
+import 'package:flourish/src/common_widget/product/product_card_vertical.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
+import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
 class WishlistScreen extends StatelessWidget {
@@ -16,6 +19,18 @@ class WishlistScreen extends StatelessWidget {
               .apply(color: slate800, fontSizeFactor: 0.8),
         ),
         centerTitle: false,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(defaultSize),
+          child: Column(
+            children: [
+              GridLayout(
+                  itemCount: 4,
+                  itemBuilder: (_, index) => const ProductCardVertical())
+            ],
+          ),
+        ),
       ),
     );
   }

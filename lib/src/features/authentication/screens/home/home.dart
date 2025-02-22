@@ -218,9 +218,9 @@ class HomeScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Recent",
-                        style: Theme.of(context).textTheme.titleLarge!.apply(
-                            color: isDark ? light : slate600,
-                            fontWeightDelta: 2)),
+                        style: Theme.of(context).textTheme.titleMedium!.apply(
+                              color: isDark ? light : slate600,
+                            )),
                   ),
                   const SizedBox(
                     height: xs,

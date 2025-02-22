@@ -4,10 +4,12 @@ import 'package:flourish/src/common_style/shadow.dart';
 import 'package:flourish/src/common_widget/icon/circular_icon.dart';
 import 'package:flourish/src/common_widget/text/product_price_text.dart';
 import 'package:flourish/src/common_widget/text/product_title_text.dart';
+import 'package:flourish/src/features/authentication/screens/product/product_details.dart';
 import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../utils/constants/colors.dart';
@@ -19,7 +21,7 @@ class ProductCardVertical extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = HelperFunction.isDarkMode(context);
     return GestureDetector(
-      onTap: () {},
+      onTap: () => Get.to(() => ProductDetails()),
       child: Container(
         width: 180,
         padding: const EdgeInsets.all(1),
@@ -32,7 +34,7 @@ class ProductCardVertical extends StatelessWidget {
           children: [
             // thumbnail, wishlist btn, discount
             RoundedContainer(
-              width: 180,
+              height: 180,
               padding: const EdgeInsets.all(sm),
               backgroundColor: isDark ? slate400 : light,
               child: Stack(

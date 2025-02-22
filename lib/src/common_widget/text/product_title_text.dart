@@ -1,3 +1,5 @@
+import 'package:flourish/src/utils/constants/colors.dart';
+import 'package:flourish/src/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 
 class ProductTitleWidget extends StatelessWidget {
@@ -16,11 +18,18 @@ class ProductTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = HelperFunction.isDarkMode(context);
     return Text(
       title,
       style: smallSize
-          ? Theme.of(context).textTheme.labelLarge
-          : Theme.of(context).textTheme.titleSmall,
+          ? Theme.of(context)
+              .textTheme
+              .titleMedium!
+              .apply(color: isDark ? slate400 : slate800)
+          : Theme.of(context)
+              .textTheme
+              .titleSmall!
+              .apply(color: isDark ? slate400 : slate800),
       overflow: TextOverflow.ellipsis,
       maxLines: maxLines,
       textAlign: textAlign,
