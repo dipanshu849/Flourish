@@ -10,7 +10,7 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = HelperFunction.isDarkMode();
+    final isDark = HelperFunction.isDarkMode(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),

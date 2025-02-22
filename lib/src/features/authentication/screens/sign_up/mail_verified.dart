@@ -1,6 +1,8 @@
+import 'package:flourish/navigation_menu.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MailVerified extends StatelessWidget {
   const MailVerified({super.key});
@@ -41,7 +43,9 @@ class MailVerified extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width / 2,
                     child: OutlinedButton(
-                      onPressed: () => (),
+                      onPressed: () {
+                        Get.offAll(() => const NavigationMenu());
+                      },
                       child: const Text("Continue"),
                     ),
                   ),

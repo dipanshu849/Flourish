@@ -1,3 +1,4 @@
+import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class ThemeOutlineButton {
@@ -6,16 +7,16 @@ class ThemeOutlineButton {
   static final lightOutlineButtonTheme = OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      foregroundColor: Colors.black,
-      side: const BorderSide(color: Colors.black),
+      foregroundColor: dark,
+      side: const BorderSide(color: dark),
       padding: const EdgeInsets.symmetric(vertical: 18),
     ),
   );
   static final darkOutlineButtonTheme = OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      foregroundColor: Colors.white,
-      side: const BorderSide(color: Colors.white),
+      foregroundColor: light,
+      side: const BorderSide(color: light),
       padding: const EdgeInsets.symmetric(vertical: 18),
     ),
   );

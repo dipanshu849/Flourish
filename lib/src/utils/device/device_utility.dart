@@ -31,4 +31,9 @@ class DeviceUtility {
   static double getBottomNavigationBarHeight(BuildContext context) {
     return MediaQuery.of(context).padding.bottom;
   }
+
+  /// Returns the height of the app bar
+  static double getAppBarHeight() {
+    return kToolbarHeight;
+  }
 }

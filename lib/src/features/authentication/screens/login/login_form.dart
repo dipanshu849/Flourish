@@ -1,3 +1,4 @@
+import 'package:flourish/navigation_menu.dart';
 import 'package:flourish/src/features/authentication/screens/sign_up/sign_up.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
@@ -13,7 +14,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = HelperFunction.getScreenSize(context);
-    final isdark = HelperFunction.isDarkMode();
+    final isdark = HelperFunction.isDarkMode(context);
     final obscurePassword = true.obs;
     return Form(
         child: Container(
@@ -87,7 +88,9 @@ class LoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.offAll(() => const NavigationMenu());
+                },
                 // controller.isLoading.value
                 //     ? () {}
                 //     : () => controller.login(),

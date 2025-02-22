@@ -15,7 +15,7 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = HelperFunction.getScreenSize(context);
-    final dark = HelperFunction.isDarkMode();
+    final dark = HelperFunction.isDarkMode(context);
     final controller = Get.put(OnBoardingController());
     return SafeArea(
         child: Scaffold(

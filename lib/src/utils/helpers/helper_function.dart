@@ -31,8 +31,8 @@ class HelperFunction {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
   }
 
-  static bool isDarkMode() {
-    return Brightness.dark == Get.mediaQuery.platformBrightness;
+  static bool isDarkMode(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
   }
 
   static Size getScreenSize(BuildContext context) {

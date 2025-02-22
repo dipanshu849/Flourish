@@ -10,7 +10,7 @@ class SignUpForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final obscurePassword = true.obs;
-    final isDark = HelperFunction.isDarkMode();
+    final isDark = HelperFunction.isDarkMode(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Form(
