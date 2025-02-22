@@ -1,4 +1,5 @@
 import 'package:flourish/navigation_menu.dart';
+import 'package:flourish/src/auth/auth_controller.dart';
 import 'package:flourish/src/features/authentication/screens/sign_up/sign_up.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
@@ -7,24 +8,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({
-    super.key,
-  });
+  LoginForm({super.key});
+
+  final AuthController controller = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
-    final Size size = HelperFunction.getScreenSize(context);
-    final isdark = HelperFunction.isDarkMode(context);
+    final isDark = HelperFunction.isDarkMode(context);
     final obscurePassword = true.obs;
+    final formKey = GlobalKey<FormState>();
+
     return Form(
-        child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 30),
-      child: Form(
+      key: formKey,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
-              // autofocus: true,
+              controller: controller.email,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.person_outline_outlined),
@@ -42,10 +44,9 @@ class LoginForm extends StatelessWidget {
                 return null;
               },
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Obx(() => TextFormField(
+                  controller: controller.password,
                   obscureText: obscurePassword.value,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.fingerprint),
@@ -54,7 +55,6 @@ class LoginForm extends StatelessWidget {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        // Toggle password visibility
                         obscurePassword.value = !obscurePassword.value;
                       },
                       icon: Icon(obscurePassword.value
@@ -71,66 +71,47 @@ class LoginForm extends StatelessWidget {
                     return null;
                   },
                 )),
-            Row(
-              children: [
-                Checkbox(
-                  value: true, // This should be linked to a state variable
-                  onChanged: (bool? newValue) {
-                    // Handle checkbox state change
-                  },
-                ),
-                const Text('Remember Me'),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Get.offAll(() => const NavigationMenu());
-                },
-                // controller.isLoading.value
-                //     ? () {}
-                //     : () => controller.login(),
-                child:
-                    // controller.isLoading.value
-                    //     ? const ButtonLoadingWidget()
-                    //     :
-                    Text("Login",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .apply(color: isdark ? slate600 : light)),
-              ),
-            ),
-            const SizedBox(
-              height: spaceBtwItems,
-            ),
+            const SizedBox(height: 20),
+            Obx(() => SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: controller.isLoading.value
+                        ? null
+                        : () {
+                            if (formKey.currentState!.validate()) {
+                              controller.signInUser().then((success) {
+                                if (success) {
+                                  Get.offAll(() => const NavigationMenu());
+                                }
+                              });
+                            }
+                          },
+                    child: controller.isLoading.value
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Text("Login",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .apply(color: isDark ? slate600 : light)),
+                  ),
+                )),
+            const SizedBox(height: spaceBtwItems),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () {
                   Get.to(const SignUpScreen());
                 },
-                // controller.isLoading.value
-                //     ? () {}
-                //     : () => controller.login(),
-                child:
-                    // controller.isLoading.value
-                    //     ? const ButtonLoadingWidget()
-                    //     :
-                    Text("Create Account",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .apply(color: isdark ? light : slate800)),
+                child: Text("Create Account",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .apply(color: isDark ? light : slate800)),
               ),
             ),
           ],
         ),
       ),
-    ));
+    );
   }
 }

@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              const LoginForm(),
+              LoginForm(),
               // const LoginFooterWidget()
             ],
           ),

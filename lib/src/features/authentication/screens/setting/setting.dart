@@ -1,3 +1,4 @@
+import 'package:flourish/src/auth/auth_controller.dart';
 import 'package:flourish/src/common_style/rounded_image.dart';
 import 'package:flourish/src/features/authentication/screens/home/widget/circular_container.dart';
 import 'package:flourish/src/features/authentication/screens/home/widget/curved_edge_widget.dart';
@@ -127,15 +128,29 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      // userModel.fullName.toUpperCase(),
-                      "Name",
-                      style: Theme.of(context).textTheme.headlineSmall,
+                    GetBuilder<AuthController>(
+                      init: AuthController(),
+                      builder: (controller) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Text(
+                                controller.userName.value.toUpperCase(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .apply(color: slate600),
+                              ),
+                            ),
+                            Text(
+                              controller.userEmail.value,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                    Text(
-                        // userModel.email,
-                        "Email",
-                        style: Theme.of(context).textTheme.bodyLarge),
                     const SizedBox(
                       height: 20,
                     ),
@@ -184,11 +199,14 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Logout",
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          )),
+                        onPressed: () {
+                          AuthController().logoutUser();
+                        },
+                        child: Text(
+                          "Logout",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
                     )
                   ],
                 ))
