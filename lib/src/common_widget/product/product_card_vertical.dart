@@ -5,6 +5,7 @@ import 'package:flourish/src/common_widget/icon/circular_icon.dart';
 import 'package:flourish/src/common_widget/text/product_price_text.dart';
 import 'package:flourish/src/common_widget/text/product_title_text.dart';
 import 'package:flourish/src/features/authentication/screens/product/product_details.dart';
+import 'package:flourish/src/features/authentication/screens/product/product_quries/product_model.dart';
 import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
@@ -15,13 +16,14 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import '../../utils/constants/colors.dart';
 
 class ProductCardVertical extends StatelessWidget {
-  const ProductCardVertical({super.key});
+  final ProductModel product;
+  const ProductCardVertical({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     final isDark = HelperFunction.isDarkMode(context);
     return GestureDetector(
-      onTap: () => Get.to(() => ProductDetails()),
+      onTap: () => Get.to(() => ProductDetails(product: product)),
       child: Container(
         width: 180,
         padding: const EdgeInsets.all(1),
@@ -34,20 +36,31 @@ class ProductCardVertical extends StatelessWidget {
           children: [
             // thumbnail, wishlist btn, discount
             RoundedContainer(
+              width: double.infinity, // Ensure full horizontal width
               height: 180,
               padding: const EdgeInsets.all(sm),
               backgroundColor: isDark ? slate400 : light,
               child: Stack(
                 children: [
-                  // thumbnail
-                  const RoundedImage(
-                    imageUrl: loginImage,
+                  // Thumbnail Image (Ensure it fills container)
+                  Positioned.fill(
+                      // This makes the image fill the container
+                      child: RoundedImage(
+                    width: double.infinity,
+                    height: double.infinity,
+                    imageUrl: (product.imageUrl != null &&
+                            product.imageUrl.isNotEmpty)
+                        ? product.imageUrl[0]
+                        : placeholderImage,
                     applyImageRadius: true,
-                  ),
+                    isNetworkImage: true,
+                    fit: BoxFit.cover,
+                  )),
 
                   // SALE TAG
                   Positioned(
-                    top: 6,
+                    top: 4,
+                    left: 2,
                     child: RoundedContainer(
                       radius: sm,
                       backgroundColor: rose.withOpacity(0.8),
@@ -56,7 +69,7 @@ class ProductCardVertical extends StatelessWidget {
                         vertical: xs,
                       ),
                       child: Text(
-                        "25%",
+                        "${product.discount}%",
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall!
@@ -73,7 +86,7 @@ class ProductCardVertical extends StatelessWidget {
                       icon: Icons.favorite_border_outlined,
                       iconColor: rose,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -85,10 +98,10 @@ class ProductCardVertical extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: ProductTitleWidget(
-                      title: "Product Title",
+                      title: product.title,
                       smallSize: true,
                     ),
                   ),
@@ -110,8 +123,8 @@ class ProductCardVertical extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const ProductPriceText(
-                        price: '100',
+                      ProductPriceText(
+                        price: product.price.toString(),
                       ),
                       Container(
                         decoration: const BoxDecoration(

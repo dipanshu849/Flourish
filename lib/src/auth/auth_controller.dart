@@ -1,5 +1,4 @@
 import 'package:flourish/src/features/authentication/screens/onboarding.dart';
-import 'package:flourish/src/features/authentication/screens/sign_up/sign_up.dart';
 import 'package:flourish/src/features/authentication/screens/sign_up/verifiy_email.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,24 +27,35 @@ class AuthController extends GetxController {
 
   Future<void> fetchUserData() async {
     final user = supabase.auth.currentUser;
-    if (user != null) {
-      userEmail.value = user.email ?? "No Email";
+    if (user == null) {
+      userEmail.value = "No Email";
+      userName.value = "No Name";
+      return;
+    }
 
-      // Fetch user details from database
+    userEmail.value = user.email ?? "No Email";
+
+    try {
       final response = await supabase
           .from('users')
           .select('full_name')
           .eq('id', user.id)
-          .single();
+          .maybeSingle(); // Use maybeSingle() to prevent crashes
 
-      if (response != null) {
+      if (response != null && response['full_name'] != null) {
         userName.value = response['full_name'];
+      } else {
+        userName.value = "No Name Found";
       }
+    } catch (e) {
+      userName.value = "Error Fetching Name";
+      Get.snackbar("Error", "Failed to load user data: $e",
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 
   /// Sign Up User
-  Future<void> signUpUser() async {
+  Future<bool> signUpUser() async {
     try {
       isLoading.value = true; // Show loading indicator
 
@@ -63,29 +73,33 @@ class AuthController extends GetxController {
         });
 
         Get.to(() => const MailVerification());
+        Get.snackbar("Sign Up Successful", "Verfiy your email.",
+            backgroundColor: Colors.green, colorText: Colors.white);
+        return true;
       } else {
         Get.snackbar("Sign Up Failed", "User could not be created.",
             backgroundColor: Colors.red, colorText: Colors.white);
+        return false;
       }
     } catch (e) {
       Get.snackbar("Error", e.toString(),
           backgroundColor: Colors.red, colorText: Colors.white);
+      return false;
     } finally {
       isLoading.value = false;
     }
   }
 
-  /// Sign In User
   Future<bool> signInUser() async {
     try {
       isLoading.value = true;
-
       final response = await supabase.auth.signInWithPassword(
         email: email.text.trim(),
         password: password.text.trim(),
       );
 
       if (response.user != null) {
+        await fetchUserData(); // Ensure user data is loaded after login
         Get.snackbar("Login Successful", "Welcome back!",
             backgroundColor: Colors.green, colorText: Colors.white);
         return true;
@@ -103,25 +117,38 @@ class AuthController extends GetxController {
     }
   }
 
-  /// Sign Out User
-  Future<void> signOutUser() async {
+  Future<void> logoutUser(RxBool isLoggingOut) async {
     try {
-      await supabase.auth.signOut();
-      Get.snackbar("Logged Out", "You have been logged out successfully.",
-          backgroundColor: Colors.blue, colorText: Colors.white);
-      Get.offAll(() => SignUpScreen()); // Redirect to SignUp/Login page
+      isLoggingOut.value = true;
+      await Supabase.instance.client.auth.signOut();
+      Get.offAll(() => const OnBoardingScreen()); // Redirect to login
+      Get.snackbar("Logout", "You have been logged out",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
     } catch (e) {
       Get.snackbar("Error", e.toString(),
           backgroundColor: Colors.red, colorText: Colors.white);
+    } finally {
+      isLoggingOut.value = false;
     }
   }
 
-  void logoutUser() async {
-    await Supabase.instance.client.auth.signOut();
-    Get.offAll(() => const OnBoardingScreen()); // Redirect to login
-    Get.snackbar("Logout", "You have been logged out",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white);
+  /// Fetch current user id
+  String? get currentUserId => supabase.auth.currentUser?.id;
+
+  /// Fetch user detail with help of userId
+  Future<Map<String, dynamic>?> fetchUserDetail(String? userId) async {
+    if (userId == null) return null;
+
+    final response = await Supabase.instance.client
+        .from('users')
+        .select()
+        .eq('id', userId)
+        .maybeSingle();
+
+    if (response == null) return null;
+
+    return response;
   }
 }

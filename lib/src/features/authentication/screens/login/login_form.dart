@@ -77,17 +77,23 @@ class LoginForm extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: controller.isLoading.value
                         ? null
-                        : () {
+                        : () async {
                             if (formKey.currentState!.validate()) {
-                              controller.signInUser().then((success) {
-                                if (success) {
-                                  Get.offAll(() => const NavigationMenu());
-                                }
-                              });
+                              controller.isLoading.value = true;
+                              bool success = await controller.signInUser();
+                              controller.isLoading.value = false;
+
+                              if (success) {
+                                Get.offAll(() => const NavigationMenu());
+                              }
                             }
                           },
                     child: controller.isLoading.value
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.white))
                         : Text("Login",
                             style: Theme.of(context)
                                 .textTheme

@@ -1,4 +1,4 @@
-import 'package:flourish/src/utils/constants/colors.dart';
+import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
@@ -32,27 +32,32 @@ class RoundedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            border: border,
-            borderRadius:
-                applyImageRadius ? BorderRadius.circular(borderRadius) : null,
+      onTap: onTap,
+      child: Container(
+        width: width ?? double.infinity, // Ensure full width
+        height: height ?? double.infinity, // Ensure full height
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: border,
+          borderRadius:
+              applyImageRadius ? BorderRadius.circular(borderRadius) : null,
+        ),
+        padding: padding,
+        child: ClipRRect(
+          borderRadius: applyImageRadius
+              ? BorderRadius.circular(borderRadius)
+              : BorderRadius.zero,
+          child: Image(
+            fit: fit,
+            image: isNetworkImage
+                ? NetworkImage(imageUrl)
+                : AssetImage(imageUrl) as ImageProvider,
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset(placeholderImage, fit: fit);
+            },
           ),
-          padding: padding,
-          child: ClipRRect(
-            borderRadius: applyImageRadius
-                ? BorderRadius.circular(borderRadius)
-                : BorderRadius.zero,
-            child: Image(
-                fit: fit,
-                image: isNetworkImage
-                    ? NetworkImage(imageUrl)
-                    : AssetImage(imageUrl) as ImageProvider),
-          ),
-        ));
+        ),
+      ),
+    );
   }
 }

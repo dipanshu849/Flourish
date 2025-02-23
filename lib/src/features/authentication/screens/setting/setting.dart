@@ -1,18 +1,21 @@
 import 'package:flourish/src/auth/auth_controller.dart';
-import 'package:flourish/src/common_style/rounded_image.dart';
+import 'package:flourish/src/common_widget/btn/loading_button.dart';
 import 'package:flourish/src/features/authentication/screens/home/widget/circular_container.dart';
 import 'package:flourish/src/features/authentication/screens/home/widget/curved_edge_widget.dart';
+import 'package:flourish/src/features/authentication/screens/onboarding.dart';
 import 'package:flourish/src/features/authentication/screens/orders/orders.dart';
 import 'package:flourish/src/features/authentication/screens/setting/setting_menu_tile.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
-import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
+
+  final RxBool isLoggingOut = false.obs;
+  final AuthController controller = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -63,46 +66,6 @@ class ProfileScreen extends StatelessWidget {
                           elevation: 0,
                         ),
                       ),
-
-//                       Column(
-//                         children: [
-// // Existing AppBar
-//                           Positioned(
-//                             top: 0,
-//                             left: 0,
-//                             right: 0,
-//                             child: AppBar(
-//                               title: Text(
-//                                 "Account",
-//                                 style: Theme.of(context)
-//                                     .textTheme
-//                                     .headlineSmall!
-//                                     .apply(
-//                                         color: slate800, fontSizeFactor: 0.8),
-//                                 // style: TextStyle(
-//                                 //     fontWeight: FontWeight.w600, fontSize: 18),
-//                               ),
-//                               backgroundColor: Colors.transparent,
-//                               elevation: 0,
-//                             ),
-//                           ),
-//                           ListTile(
-//                             leading: RoundedImage(
-//                               imageUrl: loginImage,
-//                               width: 75,
-//                               height: 75,
-//                               padding: EdgeInsets.zero,
-//                             ),
-//                             title: Text(
-//                               "Name",
-//                               style: Theme.of(context)
-//                                   .textTheme
-//                                   .titleLarge!
-//                                   .apply(color: slate800, fontWeightDelta: 2),
-//                             ),
-//                           )
-//                         ],
-//                       ),
                     ],
                     // user profile card
                   ),
@@ -128,10 +91,7 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    GetBuilder<AuthController>(
-                      init: AuthController(),
-                      builder: (controller) {
-                        return Column(
+                    Obx(() => Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Center(
@@ -148,9 +108,7 @@ class ProfileScreen extends StatelessWidget {
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ],
-                        );
-                      },
-                    ),
+                        )),
                     const SizedBox(
                       height: 20,
                     ),
@@ -196,18 +154,15 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          AuthController().logoutUser();
-                        },
-                        child: Text(
-                          "Logout",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    )
+                    Obx(() => LoadingButton(
+                          onPressed: () async {
+                            await controller.logoutUser(isLoggingOut);
+                            Get.offAll(() =>
+                                const OnBoardingScreen()); // Redirect to login
+                          },
+                          isLoading: isLoggingOut.value,
+                          text: "Logout",
+                        ))
                   ],
                 ))
 

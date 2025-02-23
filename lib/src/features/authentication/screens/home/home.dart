@@ -1,8 +1,8 @@
-import "package:flourish/src/common_widget/appbar/appbar.dart";
 import "package:flourish/src/common_widget/layout/grid_layout.dart";
 import "package:flourish/src/common_widget/product/product_card_vertical.dart";
 import "package:flourish/src/features/authentication/screens/home/widget/circular_container.dart";
 import "package:flourish/src/features/authentication/screens/home/widget/curved_edge_widget.dart";
+import "package:flourish/src/features/authentication/screens/product/product_quries/product_controller.dart";
 import "package:flourish/src/features/authentication/screens/sub_category/sub_category.dart";
 import "package:flourish/src/utils/constants/colors.dart";
 import "package:flourish/src/utils/constants/sizes.dart";
@@ -12,8 +12,22 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:line_awesome_flutter/line_awesome_flutter.dart";
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final ProductController productController = Get.put(ProductController());
+
+  @override
+  void initState() {
+    super.initState();
+    productController.fetchProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final controller = Get.put(ProfileController());
@@ -228,10 +242,35 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(
                     height: xs,
                   ),
-                  GridLayout(
-                    itemCount: 8,
-                    itemBuilder: (_, index) => const ProductCardVertical(),
-                  )
+                  Obx(() {
+                    if (productController.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (productController.products.isEmpty) {
+                      return const Center(child: Text("No products found!"));
+                    }
+
+                    // Get the most recent 8 products
+                    final recentProducts = productController.products.sublist(
+                      0,
+                      productController.products.length > 8
+                          ? 8
+                          : productController.products.length,
+                    );
+
+                    return GridLayout(
+                      itemCount: recentProducts.length,
+                      itemBuilder: (_, index) {
+                        final product = recentProducts[index];
+                        return ProductCardVertical(product: product);
+                      },
+                    );
+                  }),
+                  // GridLayout(
+                  //   itemCount: 8,
+                  //   itemBuilder: (_, index) => ProductCardVertical(),
+                  // )
                 ],
               ),
             )

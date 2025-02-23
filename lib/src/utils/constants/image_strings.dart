@@ -13,4 +13,7 @@ const String onboardingImage4 =
 // authentication images
 const String loginImage = "assets/images/authentication/login.png";
 
+//  placeholder
+const String placeholderImage = "assets/images/placeholder/placeholder.png";
+
 // social logos

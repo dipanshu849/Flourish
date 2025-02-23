@@ -1,3 +1,4 @@
+import 'package:flourish/navigation_menu.dart';
 import 'package:flourish/src/auth/auth_controller.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
@@ -8,6 +9,8 @@ class SignUpForm extends StatelessWidget {
   final AuthController controller = Get.put(AuthController());
 
   SignUpForm({super.key});
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  // final controller = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,7 @@ class SignUpForm extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Form(
+        key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -65,16 +69,30 @@ class SignUpForm extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: controller.isLoading.value
                         ? null
-                        : () => controller.signUpUser(),
+                        : () async {
+                            if (formKey.currentState!.validate()) {
+                              controller.isLoading.value = true;
+                              bool success = await controller.signUpUser();
+                              controller.isLoading.value = false;
+
+                              if (success) {
+                                Get.offAll(() => const NavigationMenu());
+                              }
+                            }
+                          },
                     child: controller.isLoading.value
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.white))
                         : Text("Create Account",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
                                 .apply(color: isDark ? slate600 : light)),
                   ),
-                )),
+                ))
           ],
         ),
       ),

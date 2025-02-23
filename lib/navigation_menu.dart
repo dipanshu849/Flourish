@@ -52,10 +52,8 @@ class NavigationMenu extends StatelessWidget {
                 width: 48, // Adjust size as needed
                 height: 48,
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? dark
-                      : slate400
-                          .withOpacity(0.4), // Solid color without opacity
+                  color:
+                      isDark ? dark : slate400, // Solid color without opacity
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -97,7 +95,7 @@ class NavigationController extends GetxController {
     // const ComplaintPage(),
     // const QRCodePage(),
     const WishlistScreen(),
-    const ProfileScreen(),
+    ProfileScreen(),
     // const ProfileScreen(),d
   ];
 }

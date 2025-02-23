@@ -4,9 +4,14 @@ import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
-class WishlistScreen extends StatelessWidget {
+class WishlistScreen extends StatefulWidget {
   const WishlistScreen({super.key});
 
+  @override
+  State<WishlistScreen> createState() => _WishlistScreenState();
+}
+
+class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +30,9 @@ class WishlistScreen extends StatelessWidget {
           padding: const EdgeInsets.all(defaultSize),
           child: Column(
             children: [
-              GridLayout(
-                  itemCount: 4,
-                  itemBuilder: (_, index) => const ProductCardVertical())
+              // GridLayout(
+              //     itemCount: 4,
+              //     itemBuilder: (_, index) =>  ProductCardVertical())
             ],
           ),
         ),
