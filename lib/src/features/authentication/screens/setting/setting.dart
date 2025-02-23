@@ -4,6 +4,7 @@ import 'package:flourish/src/features/authentication/screens/home/widget/circula
 import 'package:flourish/src/features/authentication/screens/home/widget/curved_edge_widget.dart';
 import 'package:flourish/src/features/authentication/screens/onboarding.dart';
 import 'package:flourish/src/features/authentication/screens/orders/orders.dart';
+import 'package:flourish/src/features/authentication/screens/setting/setting_controller.dart';
 import 'package:flourish/src/features/authentication/screens/setting/setting_menu_tile.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
@@ -116,39 +117,54 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    const SettingMenuTile(
-                      title: "Purchases",
-                      icon: Icons.history,
-                    ),
+                    // const SettingMenuTile(
+                    //   title: "Purchases",
+                    //   icon: Icons.history,
+                    // ),
                     SettingMenuTile(
-                      title: "My Orders",
+                      title: "Products",
                       icon: Icons.list,
                       onTap: () => Get.to(() => const OrderScreen()),
                     ),
-                    SettingMenuTile(
-                      title: "Notifications",
-                      icon: Icons.notifications,
-                      trailing: Switch(
-                        value: false,
-                        onChanged: (value) {},
-                        inactiveThumbColor: slate600,
-                        inactiveTrackColor: light,
-                        activeTrackColor: slate400,
-                        trackOutlineColor:
-                            const WidgetStatePropertyAll(slate400),
-                      ),
-                    ),
-                    SettingMenuTile(
-                      title: "Dark Mode",
-                      icon: Icons.dark_mode,
-                      trailing: Switch(
-                        value: false,
-                        onChanged: (value) {},
-                        inactiveThumbColor: slate600,
-                        inactiveTrackColor: light,
-                        activeTrackColor: slate400,
-                        trackOutlineColor:
-                            const WidgetStatePropertyAll(slate400),
+                    GetBuilder<SettingsController>(
+                      builder: (controller) => Column(
+                        children: [
+                          SettingMenuTile(
+                            title: "Notifications",
+                            icon: Icons.notifications,
+                            trailing: Obx(
+                              () => Switch(
+                                value: controller.notificationsEnabled.value,
+                                onChanged: (value) async {
+                                  await controller
+                                      .updateNotificationSetting(value);
+                                  // Force UI update
+                                  controller.update();
+                                },
+                                inactiveThumbColor: slate600,
+                                inactiveTrackColor: light,
+                                activeTrackColor: slate400,
+                                trackOutlineColor:
+                                    const WidgetStatePropertyAll(slate400),
+                              ),
+                            ),
+                          ),
+                          SettingMenuTile(
+                            title: "Dark Mode",
+                            icon: Icons.dark_mode,
+                            trailing: Obx(
+                              () => Switch(
+                                value: controller.darkModeEnabled.value,
+                                onChanged: controller.toggleDarkMode,
+                                inactiveThumbColor: slate600,
+                                inactiveTrackColor: light,
+                                activeTrackColor: slate400,
+                                trackOutlineColor:
+                                    const WidgetStatePropertyAll(slate400),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(

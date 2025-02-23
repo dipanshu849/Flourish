@@ -76,36 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           backgroundColor: Colors.transparent,
                           elevation: 0,
-                          actions: [
-                            Container(
-                              margin: const EdgeInsets.only(right: 15, top: 7),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: slate400.withOpacity(0.3),
-                              ),
-                              child: IconButton(
-                                onPressed: () {
-                                  // Get.to(() => UpdatesScreen());
-                                },
-                                icon:
-                                    const Icon(LineAwesomeIcons.bell, size: 28),
-                              ),
-                            ),
-                            // Container(
-                            //   margin: const EdgeInsets.only(right: 20, top: 7),
-                            //   decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(10),
-                            //     color: PrimaryColor.withOpacity(0.3),
-                            //   ),
-                            //   child: IconButton(
-                            //     onPressed: () {
-                            //       feedback(context);
-                            //     },
-                            //     icon: const Icon(Icons.error_outline_outlined,
-                            //         size: 28),
-                            //   ),
-                            // )
-                          ],
                         ),
                       ),
 

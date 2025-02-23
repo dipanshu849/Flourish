@@ -1,4 +1,5 @@
 import 'package:flourish/src/app.dart';
+import 'package:flourish/src/features/notification/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -9,6 +10,11 @@ void main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuYWhseHBnem90ZHJrcHpocGdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAyNTAzMTQsImV4cCI6MjA1NTgyNjMxNH0.FXfFGMxIEhEFeWPKsGEWNSRxjyMUbB56Z7pOZWx9CJM',
   );
+
+  final notificationService = NotificationService();
+  await notificationService.initialize();
+  notificationService.subscribeToNotifications();
+
   final session = Supabase.instance.client.auth.currentSession;
 
   runApp(App(isLoggedIn: session != null));

@@ -87,4 +87,19 @@ class ProductController extends GetxController {
       _isLoading.value = false;
     }
   }
+
+  // Add this method to ProductController
+  Future<void> fetchSellerProducts(String sellerId) async {
+    _isLoading.value = true;
+    try {
+      final fetchedProducts = await _productRepo.fetchSellerProducts(sellerId);
+      if (fetchedProducts.isNotEmpty) {
+        _products.assignAll(fetchedProducts);
+      }
+    } catch (e) {
+      print("Error fetching seller products: $e");
+    } finally {
+      _isLoading.value = false;
+    }
+  }
 }

@@ -61,6 +61,24 @@ class ProductRepository {
     return response.map((data) => ProductModel.fromJson(data)).toList();
   }
 
+  // Add this method to ProductRepository
+  Future<List<ProductModel>> fetchSellerProducts(String sellerId) async {
+    try {
+      final response = await _supabase
+          .from('products')
+          .select()
+          .eq('seller_id', sellerId)
+          .order('created_at', ascending: false);
+
+      return response
+          .map<ProductModel>((data) => ProductModel.fromJson(data))
+          .toList();
+    } catch (e) {
+      print("Error fetching seller products: $e");
+      return [];
+    }
+  }
+
   // Future<List<ProductModel>> getProducts() async {
   //   final response = await _supabase.from('products').select();
 
