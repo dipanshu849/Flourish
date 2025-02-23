@@ -1,14 +1,12 @@
 import 'package:flourish/src/auth/auth_controller.dart';
-import 'package:flourish/src/common_style/rounded_image.dart';
 import 'package:flourish/src/common_widget/icon/circular_icon.dart';
-import 'package:flourish/src/features/authentication/screens/home/widget/curved_edge_widget.dart';
 import 'package:flourish/src/features/authentication/screens/product/product_detail_image_slider.dart';
 import 'package:flourish/src/features/authentication/screens/product/product_meta_data.dart';
 import 'package:flourish/src/features/authentication/screens/product/product_quries/product_model.dart';
 import 'package:flourish/src/features/authentication/screens/product/rating_review.dart';
 import 'package:flourish/src/features/authentication/screens/review/review.dart';
+import 'package:flourish/src/features/authentication/screens/setting/setting_menu_tile.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
-import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
@@ -76,31 +74,16 @@ class ProductDetails extends StatelessWidget {
                       ),
                       const SizedBox(width: defaultSize),
                       // RATING
-                      // RatingReview(product: product), // Pass product rating
+                      RatingReview(product: product), // Pass product rating
                     ],
                   ),
 
-                  // REVIEWS
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Reviews",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .apply(color: isDark ? light : dark),
-                      ),
-                      IconButton(
-                        // onPressed: () => Get.to(() => ReviewScreen(productId: product.id)),
-                        onPressed: () {},
-                        icon: Icon(
-                          LineAwesomeIcons.angle_right_solid,
-                          color: isDark ? light : dark,
-                        ),
-                      ),
-                    ],
-                  ),
+                  SettingMenuTile(
+                      title: "Reviews",
+                      icon: Icons.message_outlined,
+                      onTap: () => Get.to(() => ReviewScreen(
+                            sellerId: product.sellerId,
+                          ))),
                 ],
               ),
             ),

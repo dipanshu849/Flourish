@@ -5,6 +5,7 @@ import 'package:flourish/src/common_widget/icon/circular_icon.dart';
 import 'package:flourish/src/common_widget/text/product_price_text.dart';
 import 'package:flourish/src/common_widget/text/product_title_text.dart';
 import 'package:flourish/src/features/authentication/screens/product/product_details.dart';
+import 'package:flourish/src/features/authentication/screens/product/product_quries/product_model.dart';
 import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
@@ -14,7 +15,8 @@ import 'package:flutter/material.dart';
 import '../../utils/constants/colors.dart';
 
 class ProductCardHorizontal extends StatelessWidget {
-  const ProductCardHorizontal({super.key});
+  const ProductCardHorizontal({super.key, required this.product});
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -38,67 +40,57 @@ class ProductCardHorizontal extends StatelessWidget {
             backgroundColor: isDark ? slate400 : light,
             child: Stack(
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 120,
                   width: 120,
                   child: RoundedImage(
-                    imageUrl: loginImage,
+                    imageUrl: product.imageUrl.isNotEmpty
+                        ? product.imageUrl.first
+                        : loginImage,
                     applyImageRadius: true,
+                    isNetworkImage: true,
                   ),
                 ),
 
                 // SALE TAG
-                Positioned(
-                  top: 6,
-                  child: RoundedContainer(
-                    radius: sm,
-                    backgroundColor: rose.withOpacity(0.8),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: sm,
-                      vertical: xs,
-                    ),
-                    child: Text(
-                      "25%",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .apply(color: light),
+                if (product.discount != null && product.discount! > 0)
+                  Positioned(
+                    top: 6,
+                    child: RoundedContainer(
+                      radius: sm,
+                      backgroundColor: rose.withOpacity(0.8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: sm,
+                        vertical: xs,
+                      ),
+                      child: Text(
+                        "${product.discount!.toInt()}%",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .apply(color: light),
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
 
           // DETAILS
-          const SizedBox(
+          SizedBox(
             width: 172,
-            child: const Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(xs),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProductTitleWidget(
-                        title: "Product Name",
-                        maxLines: 2,
-                        // smallSize: true,
-                      ),
-                      SizedBox(
-                        height: spaceBtwItems / 2,
-                      ),
-                      ProductPriceText(
-                        price: "100",
-                        isLarge: true,
-                      ),
-                      SizedBox(
-                        height: spaceBtwItems,
-                      )
-                    ],
-                  ),
-                )
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(xs),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProductTitleWidget(title: product.title, maxLines: 2),
+                  const SizedBox(height: spaceBtwItems / 2),
+                  ProductPriceText(
+                      price: product.price.toString(), isLarge: true),
+                  const SizedBox(height: spaceBtwItems),
+                ],
+              ),
             ),
           ),
 

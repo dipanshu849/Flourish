@@ -14,6 +14,12 @@ class ProductController extends GetxController {
   List<ProductModel> get products => _products;
   bool get isLoading => _isLoading.value;
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchProducts();
+  }
+
   // Upload product with images
   Future<void> uploadProduct({
     required String userId,
@@ -56,14 +62,27 @@ class ProductController extends GetxController {
     }
   }
 
+  // Future<void> fetchProducts() async {
+  //   try {
+  //     _isLoading.value = true;
+  //     final List<ProductModel> fetchedProducts =
+  //         await _productRepo.getProducts();
+  //     _products.assignAll(fetchedProducts); // Use assignAll to update RxList
+  //   } catch (e) {
+  //     Get.snackbar("Error", "Failed to fetch products: $e");
+  //   } finally {
+  //     _isLoading.value = false;
+  //   }
+  // }
   Future<void> fetchProducts() async {
+    _isLoading.value = true;
     try {
-      _isLoading.value = true;
-      final List<ProductModel> fetchedProducts =
-          await _productRepo.getProducts();
-      _products.assignAll(fetchedProducts); // Use assignAll to update RxList
+      final fetchedProducts = await _productRepo.getProducts();
+      if (fetchedProducts.isNotEmpty) {
+        products.assignAll(fetchedProducts);
+      }
     } catch (e) {
-      Get.snackbar("Error", "Failed to fetch products: $e");
+      print("Error fetching products: $e");
     } finally {
       _isLoading.value = false;
     }

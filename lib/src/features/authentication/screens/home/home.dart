@@ -177,7 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     return GestureDetector(
                                       onTap: () {
                                         //TODO: navigate to category page
-                                        Get.to(() => SubCategoryScreen());
+                                        Get.to(() => SubCategoryScreen(
+                                            categoryName:
+                                                categories[index].name));
                                       },
                                       child: Container(
                                         margin:
@@ -295,13 +297,6 @@ const List<Category> categories = [
   Category(name: "Electronics", icon: LineAwesomeIcons.laptop_solid),
   Category(name: "Books", icon: LineAwesomeIcons.book_solid),
   Category(name: "Accessories", icon: LineAwesomeIcons.camera_solid),
-  Category(name: "Electronics", icon: LineAwesomeIcons.laptop_solid),
-  Category(name: "Books", icon: LineAwesomeIcons.book_solid),
-  Category(name: "Accessories", icon: LineAwesomeIcons.camera_solid),
-  Category(name: "Electronics", icon: LineAwesomeIcons.laptop_solid),
-  Category(name: "Books", icon: LineAwesomeIcons.book_solid),
-  Category(name: "Accessories", icon: LineAwesomeIcons.camera_solid),
-  Category(name: "Electronics", icon: LineAwesomeIcons.laptop_solid),
-  Category(name: "Books", icon: LineAwesomeIcons.book_solid),
-  Category(name: "Accessories", icon: LineAwesomeIcons.camera_solid),
+  Category(name: "Clothing", icon: Icons.backpack_outlined),
+  Category(name: "Gaming", icon: Icons.gamepad_outlined),
 ];
