@@ -1,4 +1,5 @@
 import 'package:flourish/src/auth/auth_controller.dart';
+import 'package:flourish/src/features/authentication/screens/chat/message/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flourish/src/utils/constants/colors.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
@@ -142,69 +143,85 @@ class _RecentChatTileState extends State<RecentChatTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: slate400.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: slate800.withOpacity(0.1)),
-      ),
-      padding: const EdgeInsets.all(defaultSize / 2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: chatType == 'buying'
-                    ? rose.withOpacity(0.1)
-                    : slate600.withOpacity(0.1),
-                child: isLoading
-                    ? SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: chatType == 'buying' ? rose : slate600,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MessageScreen(
+              chatId: widget.chat['id'], // Chat ID
+              otherUserId: widget.currentUserId == widget.chat['buyer_id']
+                  ? widget.chat['seller_id']
+                  : widget.chat['buyer_id'], // Other user ID
+              currentUserName: otherUserName ?? 'User',
+            ),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: slate400.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: slate800.withOpacity(0.1)),
+        ),
+        padding: const EdgeInsets.all(defaultSize / 2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: chatType == 'buying'
+                      ? rose.withOpacity(0.1)
+                      : slate600.withOpacity(0.1),
+                  child: isLoading
+                      ? SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: chatType == 'buying' ? rose : slate600,
+                          ),
+                        )
+                      : Text(
+                          firstLetter,
+                          style: TextStyle(
+                            color: chatType == 'buying' ? rose : slate600,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      )
-                    : Text(
-                        firstLetter,
-                        style: TextStyle(
-                          color: chatType == 'buying' ? rose : slate600,
-                          fontWeight: FontWeight.w600,
+                ),
+                const SizedBox(width: spaceBtwItems / 2),
+                Flexible(
+                  child: Text(
+                    isLoading ? 'Loading...' : otherUserName ?? 'User',
+                    style: Theme.of(context).textTheme.titleMedium?.apply(
+                          color: slate800,
+                          fontWeightDelta: 1,
                         ),
-                      ),
-              ),
-              const SizedBox(width: spaceBtwItems / 2),
-              Flexible(
-                child: Text(
-                  isLoading ? 'Loading...' : otherUserName ?? 'User',
-                  style: Theme.of(context).textTheme.titleMedium?.apply(
-                        color: slate800,
-                        fontWeightDelta: 1,
-                      ),
-                  overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: spaceBtwItems / 2),
-          Text(
-            itemName,
-            style: Theme.of(context).textTheme.bodyMedium?.apply(
-                  color: slate600,
-                ),
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            lastMessage,
-            style: Theme.of(context).textTheme.bodySmall?.apply(
-                  color: slate600.withOpacity(0.8),
-                ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: spaceBtwItems / 2),
+            Text(
+              itemName,
+              style: Theme.of(context).textTheme.bodyMedium?.apply(
+                    color: slate600,
+                  ),
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              lastMessage,
+              style: Theme.of(context).textTheme.bodySmall?.apply(
+                    color: slate600.withOpacity(0.8),
+                  ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }
