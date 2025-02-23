@@ -237,11 +237,11 @@ class NavigationController extends GetxController {
   final List<Widget> screens = [
     const HomeScreen(),
     // const HomeScreen(),
-    ChatScreen(),
-    ProductUploadPage(),
+    const ChatScreen(),
+    const ProductUploadPage(),
     // const ComplaintPage(),
     // const QRCodePage(),
-    const WishlistScreen(),
+    WishlistScreen(),
     ProfileScreen(),
     // const ProfileScreen(),d
   ];

@@ -6,6 +6,7 @@ import 'package:flourish/src/common_widget/text/product_price_text.dart';
 import 'package:flourish/src/common_widget/text/product_title_text.dart';
 import 'package:flourish/src/features/authentication/screens/product/product_details.dart';
 import 'package:flourish/src/features/authentication/screens/product/product_quries/product_model.dart';
+import 'package:flourish/src/features/authentication/screens/wishlist/wishlist_query/wishlist_controller.dart';
 import 'package:flourish/src/utils/constants/image_strings.dart';
 import 'package:flourish/src/utils/constants/sizes.dart';
 import 'package:flourish/src/utils/helpers/helper_function.dart';
@@ -22,6 +23,7 @@ class ProductCardVertical extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = HelperFunction.isDarkMode(context);
+    final WishlistController wishlistController = Get.put(WishlistController());
     return GestureDetector(
       onTap: () => Get.to(() => ProductDetails(product: product)),
       child: Container(
@@ -79,14 +81,36 @@ class ProductCardVertical extends StatelessWidget {
                   ),
 
                   // Wishlist Button
-                  const Positioned(
-                    top: -6,
-                    right: 0,
-                    child: CircularIcon(
-                      icon: Icons.favorite_border_outlined,
-                      iconColor: rose,
-                    ),
-                  ),
+                  Positioned(
+                      top: -6,
+                      right: 0,
+                      child: Obx(() {
+                        final isWishlisted = wishlistController.wishlistItems
+                            .any((item) => item['product_id'] == product.id);
+
+                        return CircularIcon(
+                          icon: isWishlisted
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          iconColor: isWishlisted ? Colors.red : rose,
+                          onPressed: () => wishlistController
+                              .toggleWishlist(product.id ?? ''),
+                        );
+                      })
+                      // Obx(() {
+                      //   final isWishlisted = wishlistController.wishlistItems
+                      //       .any((item) => item['product_id'] == product.id);
+
+                      //   return CircularIcon(
+                      //     icon: isWishlisted
+                      //         ? Icons.favorite
+                      //         : Icons.favorite_border_outlined,
+                      //     iconColor: rose,
+                      //     onPressed: () =>
+                      //         wishlistController.toggleWishlist(product.id),
+                      //   );
+                      // }),
+                      ),
                 ],
               ),
             ),
