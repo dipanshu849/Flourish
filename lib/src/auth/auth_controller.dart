@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:flourish/navigation_menu.dart';
 import 'package:flourish/src/features/authentication/screens/onboarding.dart';
+import 'package:flourish/src/features/authentication/screens/sign_up/mail_verified.dart';
 import 'package:flourish/src/features/authentication/screens/sign_up/verifiy_email.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,6 +27,46 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUserData();
+  }
+
+  void startAuthChecking() {
+    final user = supabase.auth.currentUser;
+    if (user != null && user.emailConfirmedAt != null) {
+      Get.to(() => const NavigationMenu());
+    }
+  }
+
+  Future<void> fetchUserData() async {
+    final user = supabase.auth.currentUser;
+
+    if (user == null) {
+      userEmail.value = "No Email";
+      userName.value = "No Name";
+      print("No user is logged in!");
+      return;
+    }
+
+    print("User ID: ${user.id}"); // Debugging
+
+    userEmail.value = user.email ?? "No Email";
+
+    try {
+      final response = await supabase
+          .from('users')
+          .select('full_name')
+          .eq('id', user.id)
+          .maybeSingle();
+
+      if (response != null && response['full_name'] != null) {
+        userName.value = response['full_name'];
+      } else {
+        userName.value = "No Name Found";
+      }
+    } catch (e) {
+      userName.value = "Error Fetching Name";
+      Get.snackbar("Error", "Failed to load user data: $e",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
   }
 
   // Future<void> fetchUserData() async {
@@ -54,75 +98,6 @@ class AuthController extends GetxController {
   //   }
   // }
 
-//   Future<void> fetchUserData() async {
-//   final user = supabase.auth.currentUser;
-//   if (user == null) {
-//     userEmail.value = "No Email";
-//     userName.value = "No Name";
-//     return;
-//   }
-
-//   userEmail.value = user.email ?? "No Email";
-
-//   try {
-//     final response = await supabase
-//         .from('users')
-//         .select('full_name')
-//         .eq('id', user.id)
-//         .maybeSingle(); // Use maybeSingle() to prevent crashes
-
-//     if (response != null && response['full_name'] != null) {
-//       userName.value = response['full_name'];
-//     } else {
-//       userName.value = "No Name Found";
-//       // Debugging: Log the issue
-//       print("User data not found for ID: ${user.id}");
-//     }
-//   } catch (e) {
-//     userName.value = "Error Fetching Name";
-//     Get.snackbar("Error", "Failed to load user data: $e",
-//         backgroundColor: Colors.red, colorText: Colors.white);
-//     // Debugging: Log the error
-//     print("Error fetching user data: $e");
-//   }
-// }
-
-  Future<void> fetchUserData() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) {
-      print("No user is currently logged in.");
-      userEmail.value = "No Email";
-      userName.value = "No Name";
-      return;
-    }
-
-    print("Fetching data for user ID: ${user.id}");
-    userEmail.value = user.email ?? "No Email";
-
-    try {
-      final response = await supabase
-          .from('users')
-          .select('full_name')
-          .eq('id', user.id)
-          .maybeSingle();
-
-      print("Database response: $response");
-
-      if (response != null && response['full_name'] != null) {
-        userName.value = response['full_name'];
-        print("User name fetched: ${userName.value}");
-      } else {
-        userName.value = "No Name Found";
-        print("No name found for user ID: ${user.id}");
-      }
-    } catch (e) {
-      userName.value = "Error Fetching Name";
-      print("Error fetching user data: $e");
-      Get.snackbar("Error", "Failed to load user data: $e",
-          backgroundColor: Colors.red, colorText: Colors.white);
-    }
-  }
-
   /// Sign Up User
   // Future<bool> signUpUser() async {
   //   try {
@@ -141,48 +116,8 @@ class AuthController extends GetxController {
   //         'full_name': fullName.text.trim(),
   //       });
 
-  //       Get.to(() => const MailVerification());
-  //       Get.snackbar("Sign Up Successful", "Verfiy your email.",
-  //           backgroundColor: Colors.green, colorText: Colors.white);
-  //       return true;
-  //     } else {
-  //       Get.snackbar("Sign Up Failed", "User could not be created.",
-  //           backgroundColor: Colors.red, colorText: Colors.white);
-  //       return false;
-  //     }
-  //   } catch (e) {
-  //     Get.snackbar("Error", e.toString(),
-  //         backgroundColor: Colors.red, colorText: Colors.white);
-  //     return false;
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
-  // Future<bool> signUpUser() async {
-  //   try {
-  //     isLoading.value = true; // Show loading indicator
-
-  //     // Step 1: Sign up the user with Supabase Auth
-  //     final response = await supabase.auth.signUp(
-  //       email: email.text.trim(),
-  //       password: password.text.trim(),
-  //     );
-
-  //     if (response.user != null) {
-  //       // Step 2: Insert user details into the 'users' table
-  //       await supabase.from('users').insert({
-  //         'id': response.user!.id,
-  //         'email': email.text.trim(),
-  //         'full_name': fullName.text.trim(),
-  //       });
-
-  //       // Step 3: Fetch the user data immediately after sign-up
-  //       await fetchUserData();
-
-  //       // Step 4: Navigate to the verification screen
-  //       Get.to(() => const MailVerification());
-  //       Get.snackbar("Sign Up Successful", "Verify your email.",
+  //       Get.to(() => const NavigationMenu());
+  //       Get.snackbar("Sign Up Successful", "Welcome to Flourish!",
   //           backgroundColor: Colors.green, colorText: Colors.white);
   //       return true;
   //     } else {
@@ -201,37 +136,28 @@ class AuthController extends GetxController {
 
   Future<bool> signUpUser() async {
     try {
-      isLoading.value = true;
+      isLoading.value = true; // Show loading indicator
 
-      // Step 1: Sign up the user
-      final response = await supabase.auth.signUp(
+      final AuthResponse response = await supabase.auth.signUp(
         email: email.text.trim(),
         password: password.text.trim(),
       );
 
-      if (response.user != null) {
-        // Step 2: Insert user details into the 'users' table
-        final insertResponse = await supabase.from('users').insert({
-          'id': response.user!.id,
+      final user = response.user;
+      if (user != null) {
+        await supabase.from('users').insert({
+          'id': user.id,
           'email': email.text.trim(),
           'full_name': fullName.text.trim(),
-        }).select();
+        });
 
-        // Debugging: Log the insert response
-        print("Insert Response: $insertResponse");
+        // Fetch user data after signing up
+        await fetchUserData();
 
-        // Step 3: Verify the data was inserted
-        if (insertResponse != null) {
-          await fetchUserData();
-          Get.to(() => const MailVerification());
-          Get.snackbar("Sign Up Successful", "Verify your email.",
-              backgroundColor: Colors.green, colorText: Colors.white);
-          return true;
-        } else {
-          Get.snackbar("Sign Up Failed", "User data could not be saved.",
-              backgroundColor: Colors.red, colorText: Colors.white);
-          return false;
-        }
+        Get.to(() => const NavigationMenu());
+        Get.snackbar("Sign Up Successful", "Welcome to Flourish!",
+            backgroundColor: Colors.green, colorText: Colors.white);
+        return true;
       } else {
         Get.snackbar("Sign Up Failed", "User could not be created.",
             backgroundColor: Colors.red, colorText: Colors.white);
@@ -246,18 +172,50 @@ class AuthController extends GetxController {
     }
   }
 
+  // Future<bool> signInUser() async {
+  //   try {
+  //     isLoading.value = true;
+  //     final response = await supabase.auth.signInWithPassword(
+  //       email: email.text.trim(),
+  //       password: password.text.trim(),
+  //     );
+
+  //     if (response.user != null) {
+  //       await fetchUserData(); // Ensure user data is loaded after login
+  //       Get.snackbar("Login Successful", "Welcome back!",
+  //           backgroundColor: Colors.green, colorText: Colors.white);
+  //       return true;
+  //     } else {
+  //       Get.snackbar("Login Failed", "Invalid credentials.",
+  //           backgroundColor: Colors.red, colorText: Colors.white);
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar("Error", e.toString(),
+  //         backgroundColor: Colors.red, colorText: Colors.white);
+  //     return false;
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
   Future<bool> signInUser() async {
     try {
       isLoading.value = true;
+
       final response = await supabase.auth.signInWithPassword(
         email: email.text.trim(),
         password: password.text.trim(),
       );
 
       if (response.user != null) {
-        await fetchUserData(); // Ensure user data is loaded after login
+        print("User ID after login: ${response.user!.id}"); // Debugging
+
+        await fetchUserData();
+
         Get.snackbar("Login Successful", "Welcome back!",
             backgroundColor: Colors.green, colorText: Colors.white);
+        Get.to(() => const NavigationMenu()); // Navigate to the main screen
         return true;
       } else {
         Get.snackbar("Login Failed", "Invalid credentials.",

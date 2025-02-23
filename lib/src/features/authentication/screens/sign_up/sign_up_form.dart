@@ -71,13 +71,7 @@ class SignUpForm extends StatelessWidget {
                         ? null
                         : () async {
                             if (formKey.currentState!.validate()) {
-                              controller.isLoading.value = true;
-                              bool success = await controller.signUpUser();
-                              controller.isLoading.value = false;
-
-                              if (success) {
-                                Get.offAll(() => const NavigationMenu());
-                              }
+                              await controller.signUpUser();
                             }
                           },
                     child: controller.isLoading.value
