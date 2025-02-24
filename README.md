@@ -42,17 +42,15 @@ The project follows a modular structure for better organization and scalability.
 
 
 lib/
-├── main.dart # Entry point of the application
-├── app/ # Root of the application (e.g., app configuration, themes)
-├── src/ # Contains the core functionality of the app
-│ ├── auth/ # Backend logic for authentication (sign-in, sign-up)
-│ ├── features/ # Main frontend screens and UI components
-│ │ └── screens/ # Contains all the screens of the app
-│ ├── utils/ # Backbone of the app (themes, constants, helpers)
-│ └── ... # Other modules as needed
-pubspec.yaml # Contains all dependencies and project configuration
-
-
+├── main.dart          # Entry point of the application
+├── app.dart           # Root app configuration
+├── src/
+│   ├── features/
+│   │   └── screens/   # Main frontend screens
+│   ├── auth/          # Authentication logic (Sign in/Sign up)
+│   └── util/          # App-wide utilities
+│       ├── theme/     # Custom theme configurations
+│       └── constants/ # App constants
 ---
 
 ### Key Features
