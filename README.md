@@ -29,6 +29,7 @@ A Flutter-based marketplace application for the IIT Mandi community, enabling st
 | Home Screen                                 | Product Details                              |
 |----------------------------------------------|----------------------------------------------|
 | ![WhatsApp Image 2025-06-26 at 13 39 44](https://github.com/user-attachments/assets/99aaee28-b9d2-4168-8ce6-66359aadfc75) | ![WhatsApp Image 2025-06-26 at 13 39 45](https://github.com/user-attachments/assets/d718feb7-c128-446c-8b00-744f2aa1849b) |
+
 | Chat List                                   | Chat Conversation                            |
 |----------------------------------------------|----------------------------------------------|
 | ![WhatsApp Image 2025-06-26 at 13 39 46(1)](https://github.com/user-attachments/assets/9b0d6f16-4e87-4f54-903b-10552dbab59f) | ![WhatsApp Image 2025-06-26 at 13 39 46](https://github.com/user-attachments/assets/46f36171-102a-49f5-8601-17281854dc03) |
